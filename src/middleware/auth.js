@@ -3,7 +3,9 @@ module.exports = {
         if(req.user){
             next();
         }else{
-            res.status(401).send('Please Login and Comeback here');
+            res.status(401).send({
+                err : 'login and comeback'
+            });
         }
     },
 }
