@@ -10,7 +10,7 @@ router.get('/callback',
 );
 
 router.get('/failure', (req, res) => {
-    res.send('Login Failed');
+    res.redirect('https://foobar.works');
 });
 
 router.get('/success', (req, res) => {

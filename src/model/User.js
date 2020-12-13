@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const _ = require('lodash');
 const userSchema  = new mongoose.Schema({
     createdAt: {
         type: Date,
@@ -35,47 +34,9 @@ const userSchema  = new mongoose.Schema({
     },
 });
 
-class UserClass {
-    static async findOrCreateOne({email, githubId, githubAccessToken, githubRefreshToken, firstName, lastName}){
-        const user = await this.findOne({email});
-        if(user){
-            const modifier = {};
-            if(githubId){
-                modifier.githubId = githubId;
-            }
-            if(githubAccessToken){
-                modifier.githubAccessToken = githubAccessToken;
-            }
-            if(githubRefreshToken){
-                modifier.githubRefreshToken = githubRefreshToken;
-            }
-            if(firstName){
-                modifier.firstName = firstName;
-            }
-            if(lastName){
-                modifier.lastName = lastName;
-            }
-            if(_.isEmpty(modifier)){
-                return user;
-            }
-            await this.updateOne({email}, { $set : modifier });
-            return user;
-        }
-        const newUser = await this.create({
-            createdAt: new Date(),
-            email,
-            githubId,
-            githubAccessToken,
-            githubRefreshToken,
-            firstName,
-            lastName,
-        });
-        // send welcome mail
+// userSchema.statics.findByGithubId = (githubId) => {
+//     return this.findOne({githubId});
+// }
 
-        return newUser;
-    }
-}
-
-userSchema.loadClass(UserClass);
 const User = mongoose.model('User', userSchema);
 module.exports = User;
